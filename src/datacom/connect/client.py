@@ -8,7 +8,6 @@ import logging
 logger = logging.getLogger('main')
 
 
-#TODO add authentificate methods
 class DataComClient(object):
     def __init__(self, config_dict):
         self.config_dict = config_dict

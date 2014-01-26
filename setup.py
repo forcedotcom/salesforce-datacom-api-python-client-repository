@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 
 # python setup.py install
 
-required = ['requests']
+required = ['httplib2']
 
 setup(
     name='datacom_client',
@@ -29,6 +29,5 @@ library with any data.com API.
     url='http://github.com/python-client/',
     install_requires=required,
     package_dir={'datacom': 'src/datacom'},
-    include_package_data=True,
-    packages=['datacom']
+    include_package_data=True
 )

@@ -9,7 +9,7 @@ class CompanyService(object):
     def __init__(self, config_dict):
         self.config_dict = config_dict
 
-    def get_companies(self, company_ids_list, **kwargs):
+    def get_companies(self, company_ids_list, additional_headers=None, **kwargs):
         """
         get companies for the specified ids
 
