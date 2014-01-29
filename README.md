@@ -26,8 +26,11 @@ from datacom.connect.client import DataComClient
 
 config = {
             'grant_type': 'password',
-            'username': 'username',
-            'client_id': "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            'username': 'xxxx',
+            "password": "xxxxx",
+            'client_secret': "xxxxx",
+            "client_id": "xxxxx",
+            "x-ddc-client-id": "xxxxx"
         }
 client = DataComClient(config)
 ```
@@ -39,11 +42,14 @@ from datacom.connect.client import DataComClient
 
 config = {
             'grant_type': 'password',
-            'username': 'username',
-            'client_id': "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            'username': 'xxxx',
+            "password": "xxxxx",
+            'client_secret': "xxxxx",
+            "client_id": "xxxxx",
+            "x-ddc-client-id": "xxxxx"
         }
 client = DataComClient(config)
 
-contacts = self.client.contact_service().get_contacts(contact_ids_list=[123])
+contacts = self.client.contact_service().get_contacts(contact_ids_list=['123'])
 print [c.name for c in contacts]
 ```
