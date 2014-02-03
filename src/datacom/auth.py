@@ -32,7 +32,7 @@ class Auth(object):
                   'grant_type': self.config_dict.get("grant_type"), 'username': self.config_dict.get("username"),
                   "password": self.config_dict.get("password")}
 
-        datacom_response = datacom_http_request("GET", url, params=params)
+        datacom_response = auth_http_request("GET", url, params=params)
         json_str = datacom_response.content
         token_info = json.loads(json_str, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
 

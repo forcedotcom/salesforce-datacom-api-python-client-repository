@@ -7,6 +7,7 @@ from datacom.http_requests import *
 __author__ = 'okhylkouskaya'
 
 import logging
+from data import Contact
 
 logger = logging.getLogger('contact')
 
@@ -34,15 +35,15 @@ class ContactService(object):
         url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), CONTACTS_GET_URL, ",".join(contact_ids_list)])
         headers = {"x-ddc-client-id": self.config_dict.get("x-ddc-client-id")}
 
-        json_str = datacom_http_request("GET", url, auth=self.auth, params=None, headers=headers)
+        json_response = datacom_http_request("GET", url, auth=self.auth, params=None, headers=headers)
 
-        #TODO: parse list of contacts from json
-        json_str = '{"name": "John Smith", "hometown": {"name": "New York", "id": 123}}'
-        # Parse JSON into an object with attributes corresponding to dict keys.
-        contact = json.loads(json_str, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
-        return [contact]
+        #TODO handle failure parsing
+        data = json.loads(json_response)
+        return ContactList(data)
 
-    def search_contacts(self, first_name=None, last_name=None, email=None, **kwargs):
+    #TODO parameters can be passed with _, add transforming them to camel case, add ability to use states as CA, TX
+    #not numbers
+    def search_contacts(self, first_name="", last_name="", email="", **kwargs):
         """
         search contact by first_name and/or email and/or last_name, additional parameters can be passed as kwargs
 
@@ -65,6 +66,8 @@ class ContactService(object):
         headers = {"x-ddc-client-id": self.config_dict.get("x-ddc-client-id")}
         params = {"email": email, "firstName": first_name, "lastName": last_name}
         params.update(kwargs)
-        json_str = datacom_http_request("GET", url, auth=self.auth, params=params, headers=headers)
+        json_response = datacom_http_request("GET", url, auth=self.auth, params=params, headers=headers)
 
-        #TODO: parse list of contacts from json
+        #TODO handle failure parsing
+        data = json.loads(json_response)
+        return ContactList(data)

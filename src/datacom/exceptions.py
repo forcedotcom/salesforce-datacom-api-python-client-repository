@@ -27,7 +27,7 @@ class DataComApiError(Error):
         self.headers = headers
 
     def __str__(self):
-        return "Generic 400 or 500 level exception from the Data.com API %s: %s \n %s" % (self.status, self.reason, self.uri)
+        return "Generic 400 or 500 level exception from the Data.com API %s: %s \n %s" % (self.status, self.reason, self.body)
 
 
 class BadAuthentication(DataComApiError):
