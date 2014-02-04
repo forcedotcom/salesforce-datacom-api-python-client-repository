@@ -15,7 +15,7 @@ class DataComResponse(object):
     def __init__(self, httplib2_response, content, url):
         self.content = content
         self.status_code = int(httplib2_response.status)
-        self.ok = self.status_code < 400
+        self.ok = self.status_code == 200
         self.url = url
 
     def __str__(self):
@@ -88,16 +88,7 @@ def auth_http_request(method, uri, **kwargs):
     resp = make_http_request(method, uri, **kwargs)
 
     if not resp.ok:
-        #TODO check response and add correct parsing
-        try:
-            error = json.loads(resp.content)
-            code = error["code"]
-            message = "%s: %s" % (code, error["message"])
-        except:
-            code = None
-            message = resp.content
-
-        raise BadAuthentication(resp.status_code, resp.url, reason=message, code=code, body=resp.content)
+        raise BadAuthentication(resp.status_code, resp.url, body=resp.content)
 
     return resp
 
@@ -125,15 +116,6 @@ def datacom_http_request(method, uri, auth=None, **kwargs):
     resp = make_http_request(method, uri, **kwargs)
 
     if not resp.ok:
-        #TODO check response and add correct parsing
-        try:
-            error = json.loads(resp.content)
-            code = error["code"]
-            message = "%s: %s" % (code, error["message"])
-        except:
-            code = None
-            message = resp.content
-
         if is_auth_error_status_code(resp.status_code):
             if auth is not None:
                 headers["Authorization"] = "BEARER %s" % auth.request_access_token()

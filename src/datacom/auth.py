@@ -34,12 +34,12 @@ class Auth(object):
 
         datacom_response = auth_http_request("GET", url, params=params)
         json_str = datacom_response.content
-        token_info = json.loads(json_str, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        token_info = json.loads(json_str)
 
-        self.access_token = token_info.access_token
-        self.refresh_token = token_info.refresh_token
-        self.expires_in = token_info.expires_in
-        self.scope = token_info.scope
+        self.access_token = token_info["access_token"]
+        self.refresh_token = token_info["refresh_token"]
+        self.expires_in = token_info["expires_in"]
+        self.scope = token_info["scope"]
 
         print "access token: %s" % self.access_token
 

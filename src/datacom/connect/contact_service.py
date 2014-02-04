@@ -7,7 +7,6 @@ from datacom.http_requests import *
 __author__ = 'okhylkouskaya'
 
 import logging
-from data import Contact
 
 logger = logging.getLogger('contact')
 
@@ -32,12 +31,12 @@ class ContactService(object):
          'body': HTTP body of the server's response}
          'headers':headers in the request
         """
-        url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), CONTACTS_GET_URL, ",".join(contact_ids_list)])
+        url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), CONTACTS_GET_URL,
+                       ",".join(contact_ids_list)])
         headers = {"x-ddc-client-id": self.config_dict.get("x-ddc-client-id")}
 
         json_response = datacom_http_request("GET", url, auth=self.auth, params=None, headers=headers)
 
-        #TODO handle failure parsing
         data = json.loads(json_response)
         return ContactList(data)
 
@@ -68,6 +67,15 @@ class ContactService(object):
         params.update(kwargs)
         json_response = datacom_http_request("GET", url, auth=self.auth, params=params, headers=headers)
 
-        #TODO handle failure parsing
+        data = json.loads(json_response)
+        return ContactList(data)
+
+    def purchase_contacts(self, contact_ids_list, **kwargs):
+        url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), CONTACTS_PURCHASE_URL,
+                       ",".join(contact_ids_list)])
+        headers = {"x-ddc-client-id": self.config_dict.get("x-ddc-client-id")}
+
+        json_response = datacom_http_request("GET", url, auth=self.auth, params=None, headers=headers)
+
         data = json.loads(json_response)
         return ContactList(data)
