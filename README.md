@@ -1,6 +1,12 @@
-# salesforce-datacome-api-python-client
+# Salesforce Data.com Python REST API
+================================
 
-Efficient Python client library for accessing Data.com APIs using JSON and OAuth 2.0
+Think the REST API is awesome and powerful, but maybe a bit overwhelming? This native Python implementation aims to keep the implementation simple
+while keeping all the power at your fingertips.
+
+# Overview
+This Python REST API is a simple library to interact with the REST API.
+
 
 ## Installation
 
@@ -12,10 +18,17 @@ Download the source code
 
 You may need to run the above commands with `sudo`.
 
-## Getting Started
+# Features
+- Contact get
+- Contact purchase
+- Contact search
 
-Getting started with the Data.com API couldn't be easier. Create a
-`DataComClient` and you're ready to go.
+# Configuration and authentication
+The Python REST API supports only one form of authentication.
+
+## Username and password
+If your org allows it (grant_type=password), you can use the client ID, client Secret and your username and password to authenticate.
+This is discouraged and the ClientSecret authentication is preferred over this one.
 
 ### API Credentials
 
@@ -39,6 +52,7 @@ client = DataComClient(config)
 
 ```python
 from datacom.connect.client import DataComClient
+from datacom.exceptions import *
 
 config = {
             'grant_type': 'password',
@@ -61,6 +75,7 @@ except DataComApiError as e:
 
 ```python
 from datacom.connect.client import DataComClient
+from datacom.exceptions import *
 
 config = {
             'grant_type': 'password',
@@ -84,6 +99,7 @@ except DataComApiError as e:
 
 ```python
 from datacom.connect.client import DataComClient
+from datacom.exceptions import *
 
 config = {
             'grant_type': 'password',
@@ -101,3 +117,10 @@ try:
 except DataComApiError as e:
     print e
 ```
+
+# License
+The BSD 2-Clause License
+
+http://opensource.org/licenses/BSD-2-Clause
+
+See [LICENSE.txt](./LICENSE.txt)

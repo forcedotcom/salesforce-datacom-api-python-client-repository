@@ -1,10 +1,39 @@
+"""
+  Copyright (c) 2014, salesforce.com, inc.
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without modification, are permitted provided
+  that the following conditions are met:
+
+     Redistributions of source code must retain the above copyright notice, this list of conditions and the
+     following disclaimer.
+
+     Redistributions in binary form must reproduce the above copyright notice, this list of conditions and
+     the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+     Neither the name of salesforce.com, inc. nor the names of its contributors may be used to endorse or
+     promote products derived from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+  PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
+"""
+
 import httplib2
 import urllib
 import urlparse
-import json
+import logging
 from datacom.exceptions import *
 
 __author__ = 'okhylkouskaya'
+
+
+logger = logging.getLogger('datacomconnect')
 
 
 class DataComResponse(object):
@@ -44,18 +73,25 @@ def get_datacom_headers(method="GET", additional_headers=None):
 
 
 def make_http_request(method, url, params=None, data=None, cookies=None, headers=None, timeout=None):
-    """Sends an http request
-
-    :param str method: The http method to use
-    :param str url: Complete url to request
-    :param dict params: Query parameters for get requests
-    :param dict data: Parameters for the body of the http request(post)
-    :param dict headers: http Headers to send
-    :param float timeout: Connect/Read timeout for the request
-
-    :return: An http response
-    :rtype: A :class:`DataComResponse` object
     """
+    Sends an http request
+
+    Args:
+    @type method: str
+    @param method: The http method to use, possible values are [GET, POST]
+    @type: params: dictionary
+    @param params: Query parameters for get requests
+    @type: data: dictionary
+    @param data: Parameters for the body of the http request(post)
+    @type: header: dictionary
+    @param headers: http headers to send
+    @type: timeout: float
+    @param timeout: Connect/Read timeout for the request
+
+    @rtype: DataComResponse
+    @return: DataComResponse
+    """
+
     http = httplib2.Http(timeout=timeout)
 
     if data is not None:
@@ -75,15 +111,24 @@ def make_http_request(method, url, params=None, data=None, cookies=None, headers
 
 def auth_http_request(method, uri, **kwargs):
     """
-    Make a data.com specific auth http request. Adds additional headers Throws an error
+    Make a data.com specific auth http request. Adds additional headers
+    Raises BadAuthentication exception if the response is a 400 or 500-level response.
 
-    :return: An http response
-    :rtype: A :class:`DataComResponse` object
-    :rtype A :class: `datacom.Auth` object
-    :raises BadAuthentication: if the response is a 400 or 500-level response.
+    Args:
+    @type method: str
+    @param method: The http method to use, possible values are [GET, POST]
+    @type: uri: str
+    @param uri: auth uri
+    @type: kwargs: dictionary
+    @param kwargs: other parameters to pass
+
+    @rtype: DataComResponse
+    @return: DataComResponse
     """
-    print "in datacom_auth_http_request"
+
     kwargs["headers"] = get_datacom_headers(method, kwargs.get("headers"))
+
+    logger.debug("auth request headers: %s" % kwargs["headers"])
 
     resp = make_http_request(method, uri, **kwargs)
 
@@ -95,28 +140,43 @@ def auth_http_request(method, uri, **kwargs):
 
 def datacom_http_request(method, uri, auth=None, **kwargs):
     """
-    Make a data.com specific http request. Adds additional headers Throws an error
+    Sends a Data.com specific http request
 
-    :return: An http response
-    :rtype: A :class:`DataComResponse` object
-    :param auth  auth class to handle authentification
-    :rtype A :class: `datacom.Auth` object
-    :raises DataComApiError: if the response is a 400 or 500-level response.
+    Args:
+    @type method: str
+    @param method: The http method to use, possible values are [GET, POST]
+    @type: uri: str
+    @param uri: uri
+    @type: auth: Auth
+    @param auth: Auth object after auth request
+    @type: kwargs: dictionary
+    @param kwargs: other parameters to pass
+
+    On failure, a DataComApiError is raised of the form:
+        {'status': HTTP status code from server,
+         'uri':The URI that caused the exception
+         'reason': HTTP reason from the server,
+         'code': A Data.com-specific error code for the error
+         'body': HTTP body of the server's response
+         'headers':headers in the request
+        }
+    @rtype: DataComResponse
+    @return: DataComResponse
     """
-    print "in datacom_http_request"
     kwargs["headers"] = get_datacom_headers(method, kwargs.get("headers"))
 
     headers = kwargs["headers"]
     if auth is not None:
         headers["Authorization"] = "BEARER %s" % auth.get_access_token()
 
-    print "headers: %s" % kwargs["headers"]
-    print "params: %s" % kwargs["params"]
+    logger.debug("datacom_http_request request headers: %s" % kwargs["headers"])
+    logger.debug("datacom_http_request request params: %s" % kwargs["params"])
 
     resp = make_http_request(method, uri, **kwargs)
 
     if not resp.ok:
         if is_auth_error_status_code(resp.status_code):
+            logger.info("Auth error status code: %s, will try to request another access token") % (resp.status_code,)
             if auth is not None:
                 headers["Authorization"] = "BEARER %s" % auth.request_access_token()
                 resp = make_http_request(method, uri, **kwargs)
@@ -124,6 +184,6 @@ def datacom_http_request(method, uri, auth=None, **kwargs):
         if not resp.ok:
             raise DataComApiError(resp.status_code, resp.url, body=resp.content)
 
-    print "content: %s" % resp.content
+    logger.debug("datacom_http_request response content: %s" % resp.content)
 
     return resp.content
