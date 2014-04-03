@@ -96,17 +96,36 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">CompanyList</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="datacom.connect.company_service.CompanyService-class.html#get_companies" class="summary-sig-name">get_companies</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">company_ids_list</span>,
-        <span class="summary-sig-arg">additional_headers</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       get companies for the specified ids</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="datacom.connect.company_service-pysrc.html#CompanyService.get_companies">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">CompanyList</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="datacom.connect.company_service.CompanyService-class.html#search_companies" class="summary-sig-name">search_companies</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      search companies by name, additional parameters can be passed as 
+      kwargs</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="datacom.connect.company_service-pysrc.html#CompanyService.search_companies">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -192,7 +211,6 @@ object --+
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">get_companies</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">company_ids_list</span>,
-        <span class="sig-arg">additional_headers</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">**kwargs</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -201,9 +219,53 @@ object --+
   </tr></table>
   
   <p>get companies for the specified ids</p>
-  <p>Args: company_ids_list: list (required) list of company ids **kwargs: 
-  The other parameters to pass</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>company_ids_list</code></strong> (list) - list of company ids in Data.com account (required)</li>
+        <li><strong class="pname"><code>kwargs</code></strong> (dictionary) - other parameters to pass</li>
+    </ul></dd>
+    <dt>Returns: CompanyList</dt>
+        <dd>CompanyList contains list of found companies by ids, total number
+          of contacts, page size</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="datacom.exceptions.DataComApiError-class.html">DataComApiError</a></strong></code> - If response is not 200</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="search_companies"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">search_companies</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="datacom.connect.company_service-pysrc.html#CompanyService.search_companies">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>search companies by name, additional parameters can be passed as 
+  kwargs</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> (str) - full or part of company name, can be empty</li>
+        <li><strong class="pname"><code>kwargs</code></strong> (dictionary) - The other parameters to pass, see doc: TBD url #TODO</li>
+    </ul></dd>
+    <dt>Returns: CompanyList</dt>
+        <dd>CompanyList contains list of found companies by ids, total number
+          of contacts, page size</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="datacom.exceptions.DataComApiError-class.html">DataComApiError</a></strong></code> - If response is not 200</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -239,7 +301,7 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Apr  2 22:13:59 2014
+    Generated by Epydoc 3.0.1 on Thu Apr  3 10:28:27 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

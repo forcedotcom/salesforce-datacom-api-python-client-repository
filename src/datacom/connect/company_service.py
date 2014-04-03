@@ -23,6 +23,12 @@
   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
 """
+import json
+
+from data import *
+from datacom.auth import Auth
+from datacom.http_requests import *
+
 __author__ = 'okhylkouskaya'
 
 import logging
@@ -33,13 +39,54 @@ logger = logging.getLogger('datacomconnect')
 class CompanyService(object):
     def __init__(self, config_dict):
         self.config_dict = config_dict
+        self.auth = Auth(config_dict)
 
-    def get_companies(self, company_ids_list, additional_headers=None, **kwargs):
+    #@todo when input is large need to use POST, I think I would always use POST
+    def get_companies(self, company_ids_list, **kwargs):
         """
         get companies for the specified ids
 
-        Args:
-        company_ids_list: list (required) list of company ids
-        **kwargs: The other parameters to pass
+        @type company_ids_list: list
+        @param company_ids_list: list of company ids in Data.com account (required)
+        @type kwargs: dictionary
+        @param kwargs: other parameters to pass
+
+        @rtype: CompanyList
+        @return: CompanyList contains list of found companies by ids, total number of contacts, page size
+        @raise DataComApiError: If response is not 200
         """
-        return None
+        url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), COMPANIES_GET_URL,
+                       ",".join(company_ids_list)])
+        headers = {"x-ddc-client-id": self.config_dict.get("x-ddc-client-id")}
+
+        json_response = datacom_http_request("GET", url, auth=self.auth, params=None, headers=headers)
+
+        data = json.loads(json_response)
+        return CompanyList(data)
+
+    #@todo parameters can be passed with _, add transforming them to camel case, add ability to use states as CA, TX
+    #not numbers
+    #@todo deal with arrays for example ownership=1&ownership=2 ability to use
+    def search_companies(self, name="", **kwargs):
+        """
+        search companies by name, additional parameters can be passed as kwargs
+
+        @type name: str
+        @param name: full or part of company name, can be empty
+        @type kwargs: dictionary
+        @param kwargs: The other parameters to pass, see doc: TBD url #TODO
+
+        @rtype: CompanyList
+        @return: CompanyList contains list of found companies by ids, total number of contacts, page size
+        @raise DataComApiError: If response is not 200
+        """
+
+        url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), COMPANIES_SEARCH_URL])
+
+        headers = {"x-ddc-client-id": self.config_dict.get("x-ddc-client-id")}
+        params = {"name": name}
+        params.update(kwargs)
+        json_response = datacom_http_request("GET", url, auth=self.auth, params=params, headers=headers)
+
+        data = json.loads(json_response)
+        return CompanyList(data)

@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>datacom.connect.client.DataComClient</title>
+  <title>datacom.connect.data.CompanyList</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -44,8 +44,8 @@
       <span class="breadcrumbs">
         <a href="datacom-module.html">Package&nbsp;datacom</a> ::
         <a href="datacom.connect-module.html">Package&nbsp;connect</a> ::
-        <a href="datacom.connect.client-module.html">Module&nbsp;client</a> ::
-        Class&nbsp;DataComClient
+        <a href="datacom.connect.data-module.html">Module&nbsp;data</a> ::
+        Class&nbsp;CompanyList
       </span>
     </td>
     <td>
@@ -53,18 +53,20 @@
         <!-- hide/show private -->
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="datacom.connect.client.DataComClient-class.html"
+            >]&nbsp;|&nbsp;<a href="datacom.connect.data.CompanyList-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class DataComClient</h1><p class="nomargin-top"><span class="codelink"><a href="datacom.connect.client-pysrc.html#DataComClient">source&nbsp;code</a></span></p>
+<h1 class="epydoc">Class CompanyList</h1><p class="nomargin-top"><span class="codelink"><a href="datacom.connect.data-pysrc.html#CompanyList">source&nbsp;code</a></span></p>
 <pre class="base-tree">
-object --+
-         |
-        <strong class="uidshort">DataComClient</strong>
+  object --+    
+           |    
+<a href="datacom.connect.data.ListResource-class.html">ListResource</a> --+
+               |
+              <strong class="uidshort">CompanyList</strong>
 </pre>
 
 <hr />
@@ -82,11 +84,11 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="datacom.connect.client.DataComClient-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">config_dict</span>)</span><br />
+          <td><span class="summary-sig"><a href="datacom.connect.data.CompanyList-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">list_response_json</span>)</span><br />
       x.__init__(...) initializes x; see help(type(x)) for signature</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="datacom.connect.client-pysrc.html#DataComClient.__init__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="datacom.connect.data-pysrc.html#CompanyList.__init__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -100,25 +102,10 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="contact_service"></a><span class="summary-sig-name">contact_service</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="datacom.connect.data.CompanyList-class.html#create_resource" class="summary-sig-name">create_resource</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj_json</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="datacom.connect.client-pysrc.html#DataComClient.contact_service">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="company_service"></a><span class="summary-sig-name">company_service</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="datacom.connect.client-pysrc.html#DataComClient.company_service">source&nbsp;code</a></span>
+            <span class="codelink"><a href="datacom.connect.data-pysrc.html#CompanyList.create_resource">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -178,11 +165,11 @@ object --+
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">config_dict</span>)</span>
+        <span class="sig-arg">list_response_json</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="datacom.connect.client-pysrc.html#DataComClient.__init__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="datacom.connect.data-pysrc.html#CompanyList.__init__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -191,6 +178,29 @@ object --+
     <dt>Overrides:
         object.__init__
         <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="create_resource"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">create_resource</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">obj_json</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="datacom.connect.data-pysrc.html#CompanyList.create_resource">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="datacom.connect.data.ListResource-class.html#create_resource">ListResource.create_resource</a>
     </dt>
   </dl>
 </td></tr></table>
@@ -227,7 +237,7 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Apr  3 10:28:27 2014
+    Generated by Epydoc 3.0.1 on Thu Apr  3 10:28:28 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -41,6 +41,7 @@ CONTACTS_SEARCH_URL = "/data/v3/contacts/search"
 COMPANIES_GET_URL = "/data/v3/companies/get/"
 COMPANIES_SEARCH_URL = "/data/v3/companies/search"
 
+COMPANIES_JSON_KEY = "companies"
 CONTACTS_JSON_KEY = "contacts"
 TOTAL_JSON_KEY = "totalHits"
 JSON_DATE_FIELD_NAMES = ["updatedDate"]
@@ -91,3 +92,20 @@ class ContactList(ListResource):
 
     def create_resource(self, obj_json):
         return Contact(obj_json)
+
+
+class Company(SingleResource):
+    def __init__(self, attributes_json):
+        super(Company, self).__init__(attributes_json)
+
+    def __str__(self):
+        return self.name
+
+
+class CompanyList(ListResource):
+    def __init__(self, list_response_json):
+        self.companies = []
+        super(CompanyList, self).__init__(list_response_json, self.companies, COMPANIES_JSON_KEY)
+
+    def create_resource(self, obj_json):
+        return Company(obj_json)
