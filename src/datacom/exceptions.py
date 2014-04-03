@@ -35,20 +35,20 @@ class DataComApiError(Error):
         """
         A generic exception from the Data.com API
 
-            @type status: int
-            @param status: the HTTP status that was returned for the exception
-            @type uri: str
-            @param uri: The URI that caused the exception
-            @type reason: str
-            @param reason: A human-readable message for the error
-            @type code: int|None
-            @param code: A Data.com-specific error code for the error. This is
-                 not available for all errors.
-            @type body: str
-            @param body: (optional) specify if the response has already been read
-                          from the http_response object.
-            @type headers: str
-            @param headers: headers in the request
+        @type status: int
+        @param status: the HTTP status that was returned for the exception
+        @type uri: str
+        @param uri: The URI that caused the exception
+        @type reason: str
+        @param reason: A human-readable message for the error
+        @type code: int|None
+        @param code: A Data.com-specific error code for the error. This is
+             not available for all errors.
+        @type body: str
+        @param body: (optional) specify if the response has already been read
+                      from the http_response object.
+        @type headers: str
+        @param headers: headers in the request
         """
 
         self.uri = uri

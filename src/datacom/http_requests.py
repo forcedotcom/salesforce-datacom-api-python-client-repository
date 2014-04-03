@@ -51,11 +51,11 @@ class DataComResponse(object):
         return "status code %s, content: %s" % (self.status_code, self.content)
 
 
-def is_auth_error_status_code(status_code):
+def _is_auth_error_status_code(status_code):
     return status_code == 401
 
 
-def get_datacom_headers(method="GET", additional_headers=None):
+def _get_datacom_headers(method="GET", additional_headers=None):
     headers = {}
     if additional_headers is not None:
         headers = additional_headers
@@ -76,16 +76,15 @@ def make_http_request(method, url, params=None, data=None, cookies=None, headers
     """
     Sends an http request
 
-    Args:
     @type method: str
     @param method: The http method to use, possible values are [GET, POST]
-    @type: params: dictionary
+    @type params: dictionary
     @param params: Query parameters for get requests
-    @type: data: dictionary
+    @type data: dictionary
     @param data: Parameters for the body of the http request(post)
-    @type: header: dictionary
+    @type headers: dictionary
     @param headers: http headers to send
-    @type: timeout: float
+    @type timeout: float
     @param timeout: Connect/Read timeout for the request
 
     @rtype: DataComResponse
@@ -114,19 +113,19 @@ def auth_http_request(method, uri, **kwargs):
     Make a data.com specific auth http request. Adds additional headers
     Raises BadAuthentication exception if the response is a 400 or 500-level response.
 
-    Args:
     @type method: str
     @param method: The http method to use, possible values are [GET, POST]
-    @type: uri: str
+    @type uri: str
     @param uri: auth uri
-    @type: kwargs: dictionary
+    @type kwargs: dictionary
     @param kwargs: other parameters to pass
 
     @rtype: DataComResponse
     @return: DataComResponse
+    @raise BadAuthentication: If response is not 200
     """
 
-    kwargs["headers"] = get_datacom_headers(method, kwargs.get("headers"))
+    kwargs["headers"] = _get_datacom_headers(method, kwargs.get("headers"))
 
     logger.debug("auth request headers: %s" % kwargs["headers"])
 
@@ -142,28 +141,20 @@ def datacom_http_request(method, uri, auth=None, **kwargs):
     """
     Sends a Data.com specific http request
 
-    Args:
     @type method: str
     @param method: The http method to use, possible values are [GET, POST]
-    @type: uri: str
+    @type uri: str
     @param uri: uri
-    @type: auth: Auth
+    @type auth: Auth
     @param auth: Auth object after auth request
-    @type: kwargs: dictionary
+    @type kwargs: dictionary
     @param kwargs: other parameters to pass
 
-    On failure, a DataComApiError is raised of the form:
-        {'status': HTTP status code from server,
-         'uri':The URI that caused the exception
-         'reason': HTTP reason from the server,
-         'code': A Data.com-specific error code for the error
-         'body': HTTP body of the server's response
-         'headers':headers in the request
-        }
     @rtype: DataComResponse
     @return: DataComResponse
+    @raise DataComApiError: If response is not 200
     """
-    kwargs["headers"] = get_datacom_headers(method, kwargs.get("headers"))
+    kwargs["headers"] = _get_datacom_headers(method, kwargs.get("headers"))
 
     headers = kwargs["headers"]
     if auth is not None:
@@ -175,7 +166,7 @@ def datacom_http_request(method, uri, auth=None, **kwargs):
     resp = make_http_request(method, uri, **kwargs)
 
     if not resp.ok:
-        if is_auth_error_status_code(resp.status_code):
+        if _is_auth_error_status_code(resp.status_code):
             logger.info("Auth error status code: %s, will try to request another access token") % (resp.status_code,)
             if auth is not None:
                 headers["Authorization"] = "BEARER %s" % auth.request_access_token()

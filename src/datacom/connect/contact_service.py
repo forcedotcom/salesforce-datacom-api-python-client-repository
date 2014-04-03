@@ -41,27 +41,19 @@ class ContactService(object):
         self.config_dict = config_dict
         self.auth = Auth(config_dict)
 
-    #TODO when input is large need to use POST, I think I would always use POST
+    #@todo when input is large need to use POST, I think I would always use POST
     def get_contacts(self, contact_ids_list, **kwargs):
         """
         get contacts for the specified ids
 
-        Args:
         @type contact_ids_list: list
         @param contact_ids_list: list of contact ids in Data.com account (required)
-        @type: kwargs: dictionary
+        @type kwargs: dictionary
         @param kwargs: other parameters to pass
 
-        On failure, a DataComApiError is raised of the form:
-        {'status': HTTP status code from server,
-         'uri':The URI that caused the exception
-         'reason': HTTP reason from the server,
-         'code': A Data.com-specific error code for the error
-         'body': HTTP body of the server's response
-         'headers':headers in the request
-        }
         @rtype: ContactList
         @return: ContactList contains list of found contacts by ids, total number of contacts, page size
+        @raise DataComApiError: If response is not 200
         """
         url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), CONTACTS_GET_URL,
                        ",".join(contact_ids_list)])
@@ -72,32 +64,24 @@ class ContactService(object):
         data = json.loads(json_response)
         return ContactList(data)
 
-    #TODO parameters can be passed with _, add transforming them to camel case, add ability to use states as CA, TX
+    #@todo parameters can be passed with _, add transforming them to camel case, add ability to use states as CA, TX
     #not numbers
-    #TODO deal with arrays for example ownership=1&ownership=2 ability to use
+    #@todo deal with arrays for example ownership=1&ownership=2 ability to use
     def search_contacts(self, first_name="", last_name="", email="", **kwargs):
         """
         search contacts by first_name and/or email and/or last_name, additional parameters can be passed as kwargs
 
-        Args:
         @type first_name: str
         @param first_name: full or part of first name, can be empty
         @type last_name: str
         @param last_name: full or part of last name, can be empty
 
-        @type: kwargs: dictionary
+        @type kwargs: dictionary
         @param kwargs: The other parameters to pass, see doc: TBD url #TODO
 
-        On failure, a DataComApiError is raised of the form:
-        {'status': HTTP status code from server,
-         'uri':The URI that caused the exception
-         'reason': HTTP reason from the server,
-         'code': A Data.com-specific error code for the error
-         'body': HTTP body of the server's response}
-         'headers':headers in the request
-        }
         @rtype: ContactList
         @return: ContactList contains list of found contacts by ids, total number of contacts, page size
+        @raise DataComApiError: If response is not 200
         """
 
         url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), CONTACTS_SEARCH_URL])
@@ -114,22 +98,14 @@ class ContactService(object):
         """
         purchase owned contacts for the specified ids
 
-        Args:
         @type contact_ids_list: list
         @param contact_ids_list: list of owned contact ids in Data.com account (required)
-        @type: kwargs: dictionary
+        @type kwargs: dictionary
         @param kwargs: other parameters to pass
 
-        On failure, a DataComApiError is raised of the form:
-        {'status': HTTP status code from server,
-         'uri':The URI that caused the exception
-         'reason': HTTP reason from the server,
-         'code': A Data.com-specific error code for the error
-         'body': HTTP body of the server's response
-         'headers':headers in the request
-        }
         @rtype: ContactList
         @return: ContactList contains list of purchased contacts, total number of contacts, page size
+        @raise DataComApiError: If response is not 200
         """
         url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), CONTACTS_PURCHASE_URL,
                        ",".join(contact_ids_list)])
