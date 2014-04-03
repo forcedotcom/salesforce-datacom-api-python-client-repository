@@ -24,6 +24,7 @@
   POSSIBILITY OF SUCH DAMAGE.
 """
 import json
+from decimal import Decimal
 
 from data import *
 from datacom.auth import Auth
@@ -61,8 +62,7 @@ class ContactService(object):
 
         json_response = datacom_http_request("GET", url, auth=self.auth, params=None, headers=headers)
 
-        data = json.loads(json_response)
-        return ContactList(data)
+        return ContactList(json_response)
 
     #@todo parameters can be passed with _, add transforming them to camel case, add ability to use states as CA, TX
     #not numbers
@@ -91,8 +91,7 @@ class ContactService(object):
         params.update(kwargs)
         json_response = datacom_http_request("GET", url, auth=self.auth, params=params, headers=headers)
 
-        data = json.loads(json_response)
-        return ContactList(data)
+        return ContactList(json_response)
 
     def purchase_contacts(self, contact_ids_list, **kwargs):
         """
@@ -113,5 +112,4 @@ class ContactService(object):
 
         json_response = datacom_http_request("GET", url, auth=self.auth, params=None, headers=headers)
 
-        data = json.loads(json_response)
-        return ContactList(data)
+        return ContactList(json_response)

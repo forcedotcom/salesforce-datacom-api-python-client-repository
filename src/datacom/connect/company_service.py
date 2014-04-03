@@ -61,8 +61,7 @@ class CompanyService(object):
 
         json_response = datacom_http_request("GET", url, auth=self.auth, params=None, headers=headers)
 
-        data = json.loads(json_response)
-        return CompanyList(data)
+        return CompanyList(json_response)
 
     #@todo parameters can be passed with _, add transforming them to camel case, add ability to use states as CA, TX
     #not numbers
@@ -88,5 +87,4 @@ class CompanyService(object):
         params.update(kwargs)
         json_response = datacom_http_request("GET", url, auth=self.auth, params=params, headers=headers)
 
-        data = json.loads(json_response)
-        return CompanyList(data)
+        return CompanyList(json_response)

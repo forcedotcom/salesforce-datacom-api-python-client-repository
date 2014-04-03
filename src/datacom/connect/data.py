@@ -23,6 +23,8 @@
   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
 """
+from decimal import Decimal
+import json
 
 """Data model classes for parsing and generating json for the Contacts API."""
 
@@ -46,6 +48,8 @@ CONTACTS_JSON_KEY = "contacts"
 TOTAL_JSON_KEY = "totalHits"
 JSON_DATE_FIELD_NAMES = ["updatedDate"]
 
+ERRORS_JSON_KEY = "errors"
+
 DEFAULT_PAGE_SIZE = 200
 
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
@@ -62,16 +66,25 @@ class SingleResource(object):
 
 class ListResource(object):
     def __init__(self, list_response_json, list_obj, list_obj_json_key, pagesize=DEFAULT_PAGE_SIZE):
+        if list_response_json is None:
+            list_response_json = "{}"
+        list_data = json.loads(list_response_json, parse_float=Decimal)
+
         self.page_size = DEFAULT_PAGE_SIZE
         self.page_num = 1
-        self.total = list_response_json.get(TOTAL_JSON_KEY, None)
+        self.total = 0
+        self.size = 0
 
-        json_list = list_response_json[list_obj_json_key]
-        for obj_json in json_list:
-            list_obj.append(self.create_resource(obj_json))
+        if list_data is not None:
+            self.total = list_data.get(TOTAL_JSON_KEY, None)
 
-        if self.total is None:
-            self.total = len(list_obj)
+            json_list = list_data.get(list_obj_json_key, [])
+            for obj_json in json_list:
+                list_obj.append(self.create_resource(obj_json))
+
+            if self.total is None:
+                self.total = len(list_obj)
+            self.size = len(list_obj)
 
     def create_resource(self, obj_json):
         pass

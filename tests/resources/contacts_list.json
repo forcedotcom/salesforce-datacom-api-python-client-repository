@@ -1,0 +1,17 @@
+{"totalHits":5,"contacts":[{"address":"208 S Akard 10","state":"WA","country":"United States",
+                        "title":"Director","ownedType":"","areaCode":"1425","zipCode":"98051",
+                        "contactId":19950919,"phone":"+1.650.821.4107","firstName":"Ryna","lastName":"Paul",
+                        "companyName":"Microsoft Corporation","email":"ryna@gmail.com","companyId":210353,
+                        "city":"Redmond","directDial":false,"inactive":false,"updatedDate":"2011-10-11 08:38:12",
+                        "owned":false},{"address":"319 Howsland st","state":"WA","country":"United States",
+                        "title":"Engineer","ownedType":"","areaCode":"1425","zipCode":"98051",
+                        "contactId":20204898,"phone":"+1.650.822.4105","firstName":"Boo","lastName":"Goal",
+                        "companyName":"Microsoft Corporation","email":"boo@yahoo.com","companyId":210353,
+                        "city":"Redmond","directDial":false,"inactive":false,"updatedDate":"2011-10-11 08:38:17",
+                        "owned":false},{"address":"2342 oosevelt st","state":"WA","country":"United States",
+                        "title":"accounting","ownedType":"","areaCode":"1425","zipCode":"98051",
+                        "contactId":25848689,"phone":"+1.650.821.4109","firstName":"Riii","lastName":"Pirs",
+                        "companyName":"Microsoft Corporation","email":"rii@microsoft.com","companyId":210353,
+                        "city":"Redmond","directDial":false,"inactive":false,"updatedDate":"2011-10-11 08:39:09",
+                        "owned":false}]
+}

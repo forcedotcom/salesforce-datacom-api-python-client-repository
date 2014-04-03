@@ -23,15 +23,18 @@
   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
 """
+import json
+from datacom.connect.data import ERRORS_JSON_KEY
+
 __author__ = 'okhylkouskaya'
 
 
-class Error(Exception):
+class DataComError(Exception):
     pass
 
 
-class DataComApiError(Error):
-    def __init__(self, status, uri, reason="", code=None, body=None, headers=None):
+class DataComApiError(DataComError):
+    def __init__(self, status, uri, reason=None, code=None, body=None, headers=None):
         """
         A generic exception from the Data.com API
 
@@ -58,9 +61,29 @@ class DataComApiError(Error):
         self.body = body
         self.headers = headers
 
+        if self.code is None and self.reason is None and self.body:
+            self._parse_content_4_details(self.body)
+
+    def _parse_content_4_details(self, json_content):
+        try:
+            error_data = json.loads(json_content)
+            errors = error_data.get(ERRORS_JSON_KEY, [])
+
+            messages = ""
+            codes = ""
+            for error in errors:
+                messages += error.get("message", "") + ","
+                codes += str(error.get("code", "")) + ","
+
+            self.message = messages
+            self.code = codes
+        except Exception:
+            pass
+
+
     def __str__(self):
-        return "Generic exception from the Data.com API, status: %s, uri: %s, response: %s" % \
-               (self.status, self.uri, self.body)
+        return "Generic exception from the Data.com API, status: %s, uri: %s, response: %s, message: %s, code: %s" % \
+               (self.status, self.uri, self.body, self.message, self.code)
 
 
 class BadAuthentication(DataComApiError):
