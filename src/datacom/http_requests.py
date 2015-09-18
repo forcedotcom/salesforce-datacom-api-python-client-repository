@@ -93,8 +93,8 @@ def make_http_request(method, url, params=None, data=None, cookies=None, headers
 
     http = httplib2.Http(timeout=timeout)
 
-    if data is not None:
-        data = urllib.urlencode(data)
+    #if data is not None:
+     #   data = urllib.urlencode(data)
 
     if params is not None:
         enc_params = urllib.urlencode(params, doseq=True)
@@ -104,6 +104,8 @@ def make_http_request(method, url, params=None, data=None, cookies=None, headers
             url = '%s?%s' % (url, enc_params)
 
     resp, content = http.request(url, method, headers=headers, body=data)
+
+    print content
 
     return DataComResponse(resp, content.decode('utf-8'), url)
 
@@ -160,8 +162,9 @@ def datacom_http_request(method, uri, auth=None, **kwargs):
     if auth is not None:
         headers["Authorization"] = "BEARER %s" % auth.get_access_token()
 
-    logger.debug("datacom_http_request request headers: %s" % kwargs["headers"])
-    logger.debug("datacom_http_request request params: %s" % kwargs["params"])
+    logger.debug("datacom_http_request request headers: %s" % kwargs.get("headers", ""))
+    logger.debug("datacom_http_request request params: %s" % kwargs.get("params", ""))
+    logger.debug("uri: %s" % uri)
 
     resp = make_http_request(method, uri, **kwargs)
 
