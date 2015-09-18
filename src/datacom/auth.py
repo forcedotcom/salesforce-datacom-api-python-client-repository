@@ -54,17 +54,19 @@ class Auth(object):
         url = "".join([self.config_dict.get("server_url", DEFAULT_BASE_URI), OAUTH2_TOKEN_URL])
         client_id = self.config_dict.get("client_id")
         username = self.config_dict.get("username")
-        params = {"client_id": client_id, "client_secret": "secret", 'grant_type': self.config_dict.get("grant_type"),
-                  'username': username, "password": self.config_dict.get("password")}
+        params = self.config_dict
 
         logger.info("request access token by url: %s, with client_id: %s, username: %s" % (url, client_id, username))
 
         datacom_response = auth_http_request("GET", url, params=params)
         json_str = datacom_response.content
+        logger.debug("auth json str: %s" % json_str)
         token_info = json.loads(json_str)
 
         self.access_token = token_info["access_token"]
-        self.refresh_token = token_info["refresh_token"]
+        if "refresh_token" in token_info:
+            self.refresh_token = token_info["refresh_token"]
+
         self.expires_in = token_info["expires_in"]
         self.scope = token_info["scope"]
 

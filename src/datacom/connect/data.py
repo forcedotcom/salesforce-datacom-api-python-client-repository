@@ -40,6 +40,10 @@ CONTACTS_GET_URL = "/data/v3/contacts/get/"
 CONTACTS_PURCHASE_URL = "/data/v3/contacts/purchase/"
 CONTACTS_SEARCH_URL = "/data/v3/contacts/search"
 
+USER_INFO_URL = "/data/v5/users/getinfo"
+AUTOSUGGEST_URL = "/data/v5/search/autosuggest"
+BIZ_CARD_SCAN_URL = "/data/v5/contacts/scanbusinesscard"
+
 COMPANIES_GET_URL = "/data/v3/companies/get/"
 COMPANIES_SEARCH_URL = "/data/v3/companies/search"
 
@@ -79,8 +83,9 @@ class ListResource(object):
             self.total = list_data.get(TOTAL_JSON_KEY, None)
 
             json_list = list_data.get(list_obj_json_key, [])
-            for obj_json in json_list:
-                list_obj.append(self.create_resource(obj_json))
+            if json_list is not None:
+                for obj_json in json_list:
+                    list_obj.append(self.create_resource(obj_json))
 
             if self.total is None:
                 self.total = len(list_obj)
